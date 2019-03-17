@@ -1,10 +1,7 @@
 ﻿using System;
 
-namespace Sample01.Models
+namespace Sample05.Models
 {
-    /// <summary>
-    /// 内容实体
-    /// </summary>
     public class Content
     {
         /// <summary>
@@ -25,13 +22,13 @@ namespace Sample01.Models
         /// <summary>
         /// 状态 1 正常 0 删除
         /// </summary>
-        public int Status { get; set; }
+        public int Status { get; set; } = 1;
 
         /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime AddTime { get; set; } = DateTime.Now;
-        
+
         /// <summary>
         /// 修改时间
         /// </summary>
