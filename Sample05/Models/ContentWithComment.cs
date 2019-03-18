@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sample05.Models
 {
-    public class Content
+    public class ContentWithComment
     {
         /// <summary>
         /// 主键
@@ -34,10 +36,12 @@ namespace Sample05.Models
         /// </summary>
         public DateTime? ModifyTime { get; set; }
 
+        public IEnumerable<Comment> Comments { get; set; }
+
         public override string ToString()
         {
             return
-                $"ID={this.Id},Title={this.Title},ContentString={this.ContentString},Status={this.Status},AddTime={this.AddTime.ToString()},ModifyTime={(this.ModifyTime==null?string.Empty:this.ModifyTime.ToString())}";
+                $"ID={this.Id},Title={this.Title},ContentString={this.ContentString},Status={this.Status},AddTime={this.AddTime.ToString()},ModifyTime={(this.ModifyTime == null ? string.Empty : this.ModifyTime.ToString())},Comment的条数是{this.Comments.Count()}";
         }
     }
 }

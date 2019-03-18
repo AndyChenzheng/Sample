@@ -95,5 +95,49 @@ namespace Sample05.DBUnit
                 Console.WriteLine($"updatesql:更新了{result}条数据");
             }
         }
+
+        public static void Test_select_one()
+        {
+            using (var conn=new SqlConnection(@"Server=.;Database=CMS;UID=sa;PWD=sa.;Pooling=true;Max Pool Size=100;"))
+            {
+                var selectSql = @"select * from [Content] where id=@id";
+                var result = conn.QueryFirstOrDefault<Content>(selectSql, new {id = 1});
+                Console.WriteLine($"Select_one的结果是{result.ToString()}");
+            }
+        }
+
+        public static void Test_select_multiple()
+        {
+            using (var conn = new SqlConnection(@"Server=.;Database=CMS;UID=sa;PWD=sa.;Pooling=true;Max Pool Size=100;"))
+            {
+                var selectSql = @"select * from [Content] where id in @ids";
+                var result = conn.Query<Content>(selectSql, new { ids = new int[]{2,3} });
+
+                foreach (var res in result)
+                {
+                    Console.WriteLine($"Select_multiple的结果是{res.ToString()}");
+                }
+                
+            }
+        }
+
+        public static void Test_select_contentWithComment()
+        {
+            using (var conn = new SqlConnection(@"Server=.;Database=CMS;UID=sa;PWD=sa.;Pooling=true;Max Pool Size=100;"))
+            {
+                var selectSql = @"select * from [Content] where id =@id;select * from Comment where contentId=@id";
+                using (var result = conn.QueryMultiple(selectSql, new { id = 2 }))
+                {
+                    var content = result.ReadFirstOrDefault<ContentWithComment>();
+                    content.Comments = result.Read<Comment>();
+                    Console.WriteLine($"Test_select_contentWithComment的结果是{content.ToString()}");
+
+                }
+
+               
+               
+
+            }
+        }
     }
 }
