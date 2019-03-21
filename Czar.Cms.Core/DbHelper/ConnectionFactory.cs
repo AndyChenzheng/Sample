@@ -32,7 +32,7 @@ namespace Czar.Cms.Core.DbHelper
             }
 
             var dbType = GetDataBaseType(dbtype);
-            return CreateConnnection(dbType, strConn);
+            return CreateConnection(dbType, strConn);
         }
 
 
@@ -42,7 +42,7 @@ namespace Czar.Cms.Core.DbHelper
         /// <param name="dbType"></param>
         /// <param name="strConn"></param>
         /// <returns></returns>
-        public static IDbConnection CreateConnnection(DatabaseType dbType,string strConn)
+        public static IDbConnection CreateConnection(DatabaseType dbType,string strConn)
         {
             IDbConnection connection = null;
             if (strConn.IsNullOrWhiteSpace())
