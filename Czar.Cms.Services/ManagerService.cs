@@ -1,43 +1,30 @@
 /**
 *┌──────────────────────────────────────────────────────────────┐
 *│　描    述：                                                    
-*│　作    者：andy chen                                              
-*│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：2019-03-24 16:16:14                            
+*│　作    者：andy chen                                            
+*│　版    本：1.0    模板代码自动生成                                                
+*│　创建时间：2019-03-24 16:16:14                             
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
-*│　命名空间: Czar.Cms.Models                                  
-*│　类    名：RolePermission                                     
+*│　命名空间： Czar.Cms.Services                                  
+*│　类    名： ManagerService                                    
 *└──────────────────────────────────────────────────────────────┘
 */
-
+using Czar.Cms.IRepository;
+using Czar.Cms.IServices;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Czar.Cms.Models
+namespace Czar.Cms.Services
 {
-	/// <summary>
-	/// andy chen
-	/// 2019-03-24 16:16:14
-	/// 
-	/// </summary>
-	public partial class RolePermission
-	{
-  		[Key]
-		public Int32 Id{get;set;}
+    public class ManagerService: IManagerService
+    {
+        private readonly IManagerRepository _repository;
 
-		[Required]
-		[MaxLength(10)]
-		public Int32 RoleId {get;set;}
-
-		[Required]
-		[MaxLength(10)]
-		public Int32 MenuId {get;set;}
-
-		[MaxLength(128)]
-		public String Permission {get;set;}
-
-
-	}
+        public ManagerService(IManagerRepository repository)
+        {
+            _repository = repository;
+        }
+    }
 }

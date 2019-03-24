@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Czar.Cms.Core\Czar.Cms.Core.csproj" />
+    <ProjectReference Include="..\Czar.Cms.Repository.SqlServer\Czar.Cms.Repository.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

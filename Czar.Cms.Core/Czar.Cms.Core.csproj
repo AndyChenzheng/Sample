@@ -5,15 +5,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CodeTemplate\IRepositoryTemplate.txt" />
+    <None Remove="CodeTemplate\IServicesTemplate.txt" />
     <None Remove="CodeTemplate\ModelTemplate.txt" />
+    <None Remove="CodeTemplate\RepositoryTemplate.txt" />
+    <None Remove="CodeTemplate\ServiceTemplate.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="CodeTemplate\IRepositoryTemplate.txt" />
+    <EmbeddedResource Include="CodeTemplate\IServicesTemplate.txt" />
     <EmbeddedResource Include="CodeTemplate\ModelTemplate.txt" />
+    <EmbeddedResource Include="CodeTemplate\RepositoryTemplate.txt" />
+    <EmbeddedResource Include="CodeTemplate\ServiceTemplate.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.60.1" />
+    <PackageReference Include="Dapper.SimpleCRUD" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0-preview3.19153.1" />
     <PackageReference Include="MySql.Data" Version="8.0.15" />
     <PackageReference Include="Npgsql" Version="4.0.5" />

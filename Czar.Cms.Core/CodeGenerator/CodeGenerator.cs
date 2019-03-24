@@ -68,9 +68,109 @@ namespace Czar.Cms.Core.CodeGenerator
                 foreach (var table in tables)
                 {
                     GenerateEntity(table,isCoveredExsited);
-                    
+                    if (table.Columns.Any(c => c.IsPrimaryKey))
+                    {
+                        var pkTypeName = table.Columns.First(m => m.IsPrimaryKey).CSharpType;
+                        GenerateIRepository(table,pkTypeName,isCoveredExsited);
+                        GenerateRepository(table, pkTypeName, isCoveredExsited);
+                    }
+
+                    GenerateIServices(table, isCoveredExsited);
+                    GenerateServices(table,isCoveredExsited);
+
+
                 }
             }
+        }
+
+        private void GenerateIServices(DbTable table, bool ifExsitedConvered = true)
+        {
+            var iServicesPath = _options.OutputPath + "Czar.Cms.IServices";
+            if (Directory.Exists(iServicesPath))
+            {
+                Directory.CreateDirectory(iServicesPath);
+            }
+
+            var fullPath = iServicesPath + Delimiter + "I" + table.TableName + "Services.cs";
+            if (File.Exists(fullPath) && !ifExsitedConvered)
+            {
+                return;
+            }
+
+            var content = ReadTemplate("IServicesTemplate.txt");
+            content = content.Replace("{Comment}", table.TableComment)
+                .Replace("{Author}", _options.Author)
+                .Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{IServicesNamespace}", _options.IServicesNamespace)
+                .Replace("{ModelName}", table.TableName);
+            WriteAndSave(fullPath,content);
+        }
+
+        private void GenerateServices(DbTable table, bool ifExsitedCovered = true)
+        {
+            var repositoryPath = _options.OutputPath + "Czar.Cms.Services";
+            if (!Directory.Exists(repositoryPath))
+            {
+                Directory.CreateDirectory(repositoryPath);
+            }
+            var fullPath = repositoryPath + Delimiter + table.TableName + "Service.cs";
+            if (File.Exists(fullPath) && !ifExsitedCovered)
+                return;
+            var content = ReadTemplate("ServiceTemplate.txt");
+            content = content.Replace("{Comment}", table.TableComment)
+                .Replace("{Author}", _options.Author)
+                .Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{ServicesNamespace}", _options.ServicesNamespace)
+                .Replace("{ModelName}", table.TableName);
+            WriteAndSave(fullPath, content);
+        }
+
+        private void GenerateIRepository(DbTable table,string keyTypeName,bool isExsitedCovered=true)
+        {
+            var iRepositoryPath = _options.OutputPath + "Czar.Cms.IRepository";// + Delimiter + "IRepository";
+            if (!Directory.Exists(iRepositoryPath))
+            {
+                Directory.CreateDirectory(iRepositoryPath);
+            }
+
+            var fullPath = iRepositoryPath + Delimiter + "I" + table.TableName + "Repository.cs";
+            if (File.Exists(fullPath) && !isExsitedCovered)
+            {
+                return;
+            }
+
+            var content = ReadTemplate("IRepositoryTemplate.txt");
+            content = content.Replace("{Comment}", table.TableComment)
+                .Replace("{Author}", _options.Author)
+                .Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{IRepositoryNamespace}", _options.IRepositoryNamespace)
+                .Replace("{ModelName}", table.TableName)
+                .Replace("{KeyTypeName}", keyTypeName);
+            WriteAndSave(fullPath,content);
+        }
+
+        private void GenerateRepository(DbTable table,string keyTypeName,bool isExsitedConvered=true)
+        {
+            var repositoryPath = _options.OutputPath + "Czar.Cms.Repository.SqlServer";
+            if (!Directory.Exists(repositoryPath))
+            {
+                Directory.CreateDirectory(repositoryPath);
+            }
+
+            var fullPath = repositoryPath + Delimiter + table.TableName + "Repository.cs";
+            if (File.Exists(fullPath) && !isExsitedConvered)
+            {
+                return;
+            }
+
+            var content = ReadTemplate("RepositoryTemplate.txt");
+            content = content.Replace("{Comment}", table.TableComment)
+                .Replace("{Author}", _options.Author)
+                .Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{RepositoryNamespace}", _options.RepositoryNamespace)
+                .Replace("{ModelName}", table.TableName)
+                .Replace("{KeyTypeName}", keyTypeName);
+            WriteAndSave(fullPath,content);
         }
 
         /// <summary>
@@ -151,7 +251,7 @@ namespace Czar.Cms.Core.CodeGenerator
 
         private void GenerateModelpath(DbTable table, out string path, out string pathP)
         {
-            var modelPath = _options.OutputPath + Delimiter + "Models";
+            var modelPath = _options.OutputPath+ "Czar.Cms.Models" + Delimiter + "Models";
             if (!Directory.Exists(modelPath))
             {
                 Directory.CreateDirectory(modelPath);
