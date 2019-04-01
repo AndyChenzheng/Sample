@@ -10,13 +10,16 @@
 *│　接口名称： IMenuRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Czar.Cms.ViewModels.Menu;
 
 namespace Czar.Cms.IServices
 {
     public interface IMenuService
     {
+        TableDataModel LoadData(MenuRequestModel model);
     }
 }

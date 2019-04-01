@@ -12,9 +12,13 @@
 */
 using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
+using Czar.Cms.ViewModels;
+using Czar.Cms.ViewModels.Menu;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Czar.Cms.Core.Extensions;
 
 namespace Czar.Cms.Services
 {
@@ -25,6 +29,24 @@ namespace Czar.Cms.Services
         public MenuService(IMenuRepository repository)
         {
             _repository = repository;
+        }
+
+        public TableDataModel LoadData(MenuRequestModel model)
+        {
+            string conditions = " where IsDelete=0";
+            if (!model.Key.IsNullOrWhiteSpace())
+            {
+                conditions += $" and DisplayName like '%@Key%'";
+            }
+
+            return new TableDataModel
+            {
+                count = _repository.RecordCount(conditions),
+                data=_repository.GetListPaged(model.Page,model.Limit,conditions,"Id desc",new {Key=model.Key}).ToList(),
+
+            };
+
+           
         }
     }
 }
