@@ -1,3 +1,4 @@
+
 /**
 *┌──────────────────────────────────────────────────────────────┐
 *│　描    述：                                                    
@@ -6,17 +7,30 @@
 *│　创建时间：2019-04-06 18:52:22                           
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
-*│　命名空间： Czar.Cms.IServices                                   
-*│　接口名称： IRolePermissionRepository                                      
+*│　命名空间： Czar.Cms.IRepository                                   
+*│　接口名称： INLogRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.Core.Repository;
+using Czar.Cms.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
-namespace Czar.Cms.IServices
+namespace Czar.Cms.IRepository
 {
-    public interface IRolePermissionService
+    public interface INLogRepository : IBaseRepository<NLog, Int32>
     {
+	     /// <summary>
+        /// 逻辑删除返回影响的行数
+        /// </summary>
+        /// <param name="ids">需要删除的主键数组</param>
+        /// <returns>影响的行数</returns>
+        Int32 DeleteLogical(Int32[] ids);
+        /// <summary>
+        /// 逻辑删除返回影响的行数（异步操作）
+        /// </summary>
+        /// <param name="ids">需要删除的主键数组</param>
+        /// <returns>影响的行数</returns>
+        Task<Int32> DeleteLogicalAsync(Int32[] ids);
     }
 }

@@ -54,7 +54,7 @@ namespace Czar.Cms.Core.CodeGenerator
         /// 根据数据库连接字符串生成数据库表对应的模板代码
         /// </summary>
         /// <param name="isCoveredExsited">是否覆盖已存在的同名文件</param>
-        public void GenerateTemplateCodesFromDatabase(bool isCoveredExsited = true)
+        public void GenerateTemplateCodesFromDatabase(bool isCoveredExsited = false)
         {
             DatabaseType dbType = ConnectionFactory.GetDataBaseType(_options.DbType);
             List<DbTable> tables=new List<DbTable>();

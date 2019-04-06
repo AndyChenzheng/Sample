@@ -7,7 +7,7 @@
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间： Czar.Cms.IServices                                   
-*│　接口名称： IRolePermissionRepository                                      
+*│　接口名称： INLogRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Czar.Cms.IServices
 {
-    public interface IRolePermissionService
+    public interface INLogService
     {
     }
 }

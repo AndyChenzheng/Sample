@@ -7,7 +7,7 @@
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间： Czar.Cms.Repository.SqlServer                                  
-*│　类    名： ManagerLogRepository                                      
+*│　类    名： NLogRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
 using Czar.Cms.Core.DbHelper;
@@ -22,9 +22,9 @@ using System.Threading.Tasks;
 
 namespace Czar.Cms.Repository.SqlServer
 {
-    public class ManagerLogRepository:BaseRepository<ManagerLog,Int32>, IManagerLogRepository
+    public class NLogRepository:BaseRepository<NLog,Int32>, INLogRepository
     {
-        public ManagerLogRepository(IOptionsSnapshot<DbOption> options)
+        public NLogRepository(IOptionsSnapshot<DbOption> options)
         {
             _dbOption =options.Get("CzarCms");
             if (_dbOption == null)
@@ -36,7 +36,7 @@ namespace Czar.Cms.Repository.SqlServer
 
 		public int DeleteLogical(int[] ids)
         {
-            string sql = "update ManagerLog set IsDelete=1 where Id in @Ids";
+            string sql = "update NLog set IsDelete=1 where Id in @Ids";
             return _dbConnection.Execute(sql, new
             {
                 Ids = ids
@@ -45,7 +45,7 @@ namespace Czar.Cms.Repository.SqlServer
 
         public async Task<int> DeleteLogicalAsync(int[] ids)
         {
-            string sql = "update ManagerLog set IsDelete=1 where Id in @Ids";
+            string sql = "update NLog set IsDelete=1 where Id in @Ids";
             return await _dbConnection.ExecuteAsync(sql, new
             {
                 Ids = ids

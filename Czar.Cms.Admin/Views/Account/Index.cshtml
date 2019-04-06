@@ -36,7 +36,7 @@
     <div class="layui-form-item input-item" id="imgCode">
         <label for="code">验证码</label>
         <input type="text" placeholder="请输入验证码" autocomplete="off" id="CaptchaCode" name="CaptchaCode" class="layui-input" lay-verify="required|captchaCode"/>
-
+        <img src="@Url.Action("GetCaptchaImage","Account")" id="CaptchaCodeImg"/>
     </div>
     <div class="layui-form-item">
         <button class="layui-btn layui-block" lay-filter="login" lay-submit>登录</button>
@@ -47,7 +47,8 @@
         <a href="javascript:;" class="seraph icon-sina layui-col-xs4 layui-col-sm4 layui-col-md4 layui-col-lg4"></a>
     </div>
 </form>
-    <script type="text/javascript" src="~/layui/layui.js"></script>
+<script type="text/javascript" src="~/layui/layui.js"></script>
+<script type="text/javascript" src="~/js/login.js?_=@DateTime.Now.ToString("yyyyMMddHHssmm")"></script>
 
 </body>
 

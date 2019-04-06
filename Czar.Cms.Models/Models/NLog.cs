@@ -7,7 +7,7 @@
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
-*│　类    名：Manager                                     
+*│　类    名：NLog                                     
 *└──────────────────────────────────────────────────────────────┘
 */
 
@@ -22,68 +22,31 @@ namespace Czar.Cms.Models
 	/// 2019-04-06 18:52:22
 	/// 
 	/// </summary>
-	public partial class Manager
+	public partial class NLog
 	{
   		[Key]
 		public Int32 Id{get;set;}
 
-		[Required]
-		[MaxLength(10)]
-		public Int32 RoleId {get;set;}
-
-		[Required]
-		[MaxLength(32)]
-		public String UserName {get;set;}
-
-		[Required]
-		[MaxLength(128)]
-		public String Password {get;set;}
-
-		[MaxLength(256)]
-		public String Avatar {get;set;}
-
-		[MaxLength(32)]
-		public String NickName {get;set;}
-
-		[MaxLength(16)]
-		public String Mobile {get;set;}
-
-		[MaxLength(128)]
-		public String Email {get;set;}
-
-		[MaxLength(10)]
-		public Int32? LoginCount {get;set;}
-
-		[MaxLength(64)]
-		public String LoginLastIp {get;set;}
+		[MaxLength(50)]
+		public String Application {get;set;}
 
 		[MaxLength(23)]
-		public DateTime? LoginLastTime {get;set;}
+		public DateTime? Logged {get;set;}
 
-		[Required]
-		[MaxLength(10)]
-		public Int32 AddManagerId {get;set;}
+		[MaxLength(50)]
+		public String Level {get;set;}
 
-		[Required]
-		[MaxLength(23)]
-		public DateTime AddTime {get;set;}
+		[MaxLength(512)]
+		public String Message {get;set;}
 
-		[MaxLength(10)]
-		public Int32? ModifyManagerId {get;set;}
+		[MaxLength(250)]
+		public String Logger {get;set;}
 
-		[MaxLength(23)]
-		public DateTime? ModifyTime {get;set;}
+		[MaxLength(512)]
+		public String Callsite {get;set;}
 
-		[Required]
-		[MaxLength(1)]
-		public Boolean IsLock {get;set;}
-
-		[Required]
-		[MaxLength(1)]
-		public Boolean IsDelete {get;set;}
-
-		[MaxLength(128)]
-		public String Remark {get;set;}
+		[MaxLength(512)]
+		public String Exception {get;set;}
 
 
 	}
