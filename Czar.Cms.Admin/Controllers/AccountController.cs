@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Czar.Cms.Admin.Validation;
 using Czar.Cms.Core.Extensions;
@@ -9,6 +10,8 @@ using Czar.Cms.Core.Helper;
 using Czar.Cms.IServices;
 using Czar.Cms.ViewModels;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -41,7 +44,7 @@ namespace Czar.Cms.Admin.Controllers
         [HttpPost,ValidateAntiForgeryToken,Route("Account/SignIn")]
         public async Task<string> SignInAsync(LoginModel model)
         {
-            BaseResult result=new BaseResult();
+            BaseResult result=new BaseResult(){ReturnUrl = model.ReturnUrl};
             if (!ValidateCaptchaCode(model.CaptchaCode))
             {
                 result.ResultCode = ResultCodeAddMsgKeys.SignInCaptchaCodeErrorCode;
@@ -75,9 +78,50 @@ namespace Czar.Cms.Admin.Controllers
             }
 
             model.Ip = HttpContext.GetClientUserIp();
+            var manager = _service.SignIn(model);
+            if (manager == null)
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.SignInPasswordOrUserNameErrorCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.SignInPasswordOrUserNameErrorMsg;
+            }else if (manager.IsLock)
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.SignInUserLockedCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.SignInUserLockedMsg;
+            }
+            else
+            {
+                var claims=new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name,manager.UserName),
+                    new Claim(ClaimTypes.Role,manager.RoleId.ToString()),
+                    new Claim("NickName",manager.NickName??"匿名"),
+                    new Claim("Id",manager.Id.ToString()),
+                    new Claim("LoginCount",manager.LoginCount.ToString()),
+                    new Claim("LoginLastIp",manager.LoginLastIp),
+                    new Claim("LoginLastTime",manager.LoginLastTime?.ToString("yyyy-MM-dd HH:mm:ss")),
+                };
+                var clainsIdentity=new ClaimsIdentity(
+                    claims,CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(clainsIdentity));
+                _httpContextAccessor.HttpContext.Session.SetInt32("Id",manager.Id);
+                _httpContextAccessor.HttpContext.Session.SetInt32("RoleId",manager.RoleId);
+                _httpContextAccessor.HttpContext.Session.SetString("NickName",manager.NickName??"匿名");
+                _httpContextAccessor.HttpContext.Session.SetString("Email",manager.Email??"");
+                _httpContextAccessor.HttpContext.Session.SetString("Avatar",manager.Avatar??"/images/userface1.jpg");
+                _httpContextAccessor.HttpContext.Session.SetString("Mobile",manager.Mobile??"");
+            }
 
 
-            return null;
+            return JsonHelper.ObjectToJson(result);
+        }
+
+        [Route("Account/SignOut")]
+        public async Task<IActionResult> SignOutAsync()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index");
         }
 
 

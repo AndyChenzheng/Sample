@@ -42,7 +42,7 @@ namespace Czar.Cms.Admin
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => true; //如果要其它基于cookie的生效，这里要返回false
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 

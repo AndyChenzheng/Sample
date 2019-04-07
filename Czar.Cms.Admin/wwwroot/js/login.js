@@ -10,21 +10,28 @@
     });
 
     form.on("submit(login)",
-        function (data) {
-            console.log(data);
+        function(data) {
+            var returnUrl = getQueryString("ReturnUrl")
+            var oldData = Object.assign({}, data.field);
+            var newData;
+            if (!!returnUrl) {
+                newData = Object.assign({}, oldData, { ReturnUrl: returnUrl });
+            }
+            console.log(newData);
             var obj = $(this);
             obj.text("登录中...").attr("disabled", "disabled").addClass("layui-disabled");
             $.ajax({
                 type: 'POST',
                 url: '/Account/SignIn/',
-                data: data.field,
+                data: newData,
                 dataType: "json",
                 headers: {
                     "X-CSRF-TOKEN-andy": $("input[name='AntiforgeryFieldname']").val()
                 },
                 success: function(res) {
                     if (res.ResultCode === 0) {
-                        window.location.href = "/";
+                        //window.location.href = "/";
+                        window.location.href = res.ReturnUrl;
                     } else {
                         layer.alert(res.ResultMsg, { icon: 5 });
                         d = new Date();
@@ -112,3 +119,10 @@
 
 
 })
+
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+}

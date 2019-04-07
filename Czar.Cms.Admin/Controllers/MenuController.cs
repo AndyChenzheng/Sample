@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Czar.Cms.Admin.Controllers
 {
-    public class MenuController : Controller
+    public class MenuController : BaseController
     {
         private readonly IMenuService _service;
 

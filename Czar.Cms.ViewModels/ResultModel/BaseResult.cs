@@ -9,6 +9,8 @@
 
         public string ResultMsg { get; set; } = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
 
+        public string ReturnUrl { get; set; } = "/";
+
         public BaseResult()
         {
             
@@ -18,6 +20,12 @@
         {
             ResultCode = resultCode;
             ResultMsg = resultMsg;
+        }
+        public BaseResult(int resultCode, string resultMsg,string returnUrl)
+        {
+            ResultCode = resultCode;
+            ResultMsg = resultMsg;
+            ReturnUrl = returnUrl;
         }
 
     }
